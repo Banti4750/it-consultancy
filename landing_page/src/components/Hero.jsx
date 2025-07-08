@@ -19,7 +19,7 @@ const Hero = () => {
     setSuccess(false);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/user/contact-form', {
+      const response = await axios.post('https://it-consultancy.onrender.com/api/user/contact-form', {
         fullName: name,
         email,
         mobileNumber: phone,

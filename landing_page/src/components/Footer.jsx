@@ -12,7 +12,7 @@ const Footer = () => {
 
   async function handleSuscribeEmail() {
     try {
-      const response = await axios.post('http://localhost:3000/api/user/subscribe-email', {
+      const response = await axios.post('https://it-consultancy.onrender.com/api/user/subscribe-email', {
         email: email
       });
       if (response.status === 201) {

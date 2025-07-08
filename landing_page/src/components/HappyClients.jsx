@@ -10,7 +10,7 @@ const HappyClients = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/user/clients'); // Assuming your backend runs on port 3000
+        const response = await fetch('https://it-consultancy.onrender.com/api/user/clients'); // Assuming your backend runs on port 3000
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
