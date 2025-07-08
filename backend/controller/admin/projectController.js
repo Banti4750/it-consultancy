@@ -36,7 +36,7 @@ exports.addProject = async (req, res) => {
           InputFile.fromBuffer(req.file.buffer, req.file.originalname)
         );
         imageId = fileId;
-        imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${fileId}/preview`;
+        imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${fileId}/view`;
       } catch (uploadError) {
         console.error('Image upload failed:', uploadError);
         return res.status(500).json({ error: 'Failed to upload image' });
@@ -73,7 +73,7 @@ exports.getProjects = async (req, res) => {
       let imageUrl = null;
       if (project.imageId) {
         try {
-          imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${project.imageId}/preview`;
+          imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${project.imageId}/view`;
         } catch (error) {
           console.error(`Error generating image URL for project ${project._id}:`, error);
         }
@@ -135,7 +135,7 @@ exports.updateProject = async (req, res) => {
 
     let imageUrl = null;
     if (updatedProject.imageId) {
-      imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${updatedProject.imageId}/preview`;
+      imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${updatedProject.imageId}/view`;
     }
 
     res.status(200).json({

@@ -6,7 +6,7 @@ const Client = require('../../models/Client');
 
 const getImageUrl = (imageId) => {
   if (!imageId) return null;
-  return `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${imageId}/preview`;
+  return `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${imageId}/view`;
 };
 exports.submitContactForm = async (req, res) => {
     try {
@@ -49,7 +49,7 @@ exports.getProjects = async (req, res) => {
       let imageUrl = null;
       if (project.imageId) {
         try {
-          imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${project.imageId}/preview`;
+          imageUrl = `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${project.imageId}/view`;
         } catch (error) {
           console.error(`Error generating image URL for project ${project._id}:`, error);
         }
