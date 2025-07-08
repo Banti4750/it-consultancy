@@ -5,7 +5,7 @@ const projectController = require('../controller/admin/projectController');
 const clientController = require('../controller/admin/clientController');
 const { upload } = require('../controller/admin/clientController');
 const userContactController = require('../controller/admin/usercontactController');
-const userSubscribedEmailController = require('../controller/admin/userSubscribedEmailController');
+const userSubscribedEmailController = require('../controller/admin/usersubscribedEmailController');
 const adminAuthController = require('../controller/admin/adminAuthController');
 const { Admin } = require('../db');
 
