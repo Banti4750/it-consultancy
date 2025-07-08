@@ -1,37 +1,38 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import ProjectCard from './ProjectCard';
 
 const OurProjects = () => {
- // Sample backend data structure
-  const projectsData = [
-    {
-      id: 1,
-      imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      name: "Consultation",
-      description: "Professional real estate consultation services to help you make informed decisions about your property investments and sales strategies."
-    },
-    {
-      id: 2,
-      imageUrl: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      name: "Design",
-      description: "Expert interior design services to enhance your home's appeal and market value with modern, functional design solutions."
-    },
-    {
-      id: 3,
-      imageUrl: "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      name: "Marketing & Design",
-      description: "Comprehensive marketing strategies combined with professional design services to maximize your property's market exposure and appeal."
-    },
-    {
-      id: 4,
-      imageUrl: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      name: "Consultation & Marketing",
-      description: "Combined consultation and marketing services to provide end-to-end support for your real estate transactions and investment decisions."
-    },
-    
-  ];
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/user/projects'); // Assuming your backend runs on port 3000
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setProjects(data.projects);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-12">Loading projects...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-12 text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -47,13 +48,12 @@ const OurProjects = () => {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {projectsData.map((project) => (
+          {projects.map((project) => (
             <ProjectCard
-              key={project.id}
-              imageUrl={project.imageUrl}
+              key={project._id} // Assuming _id from MongoDB
+              imageUrl={project.image+'?project=686c4502002a3f8df424&mode=admin'} // Assuming image URL is provided by backend
               name={project.name}
               description={project.description}
-              
             />
           ))}
         </div>

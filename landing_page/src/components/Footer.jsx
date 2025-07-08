@@ -2,10 +2,28 @@ import React from 'react';
 import logo from "../assets/logo.svg"
 import Reactangle from "../assets/Rectangle.svg"
 import { Twitter, Instagram, Facebook, Linkedin } from 'lucide-react';
+import { useState } from 'react';
+import axios from 'axios';
 
 
 const Footer = () => {
   const navLinks = ["Home", "Services", "Projects", "Testimonials", "Connect"];
+  const [email , setemail] = useState('')
+
+  async function handleSuscribeEmail() {
+    try {
+      const response = await axios.post('http://localhost:3000/api/user/subscribe-email', {
+        email: email
+      });
+      if (response.status === 201) {
+        alert('Thank you for subscribing!');
+        setemail('');
+      }
+    } catch(error) {
+      console.error('Subscription error:', error);
+      alert('Subscription failed. Please try again.');
+    }
+  }
 
   return (
     <footer className="w-full bg-white">
@@ -46,9 +64,12 @@ const Footer = () => {
                 <input
                   type="email"
                   placeholder="Your Email Address"
+                  onChange={(e) => setemail(e.target.value)}
                   className="bg-transparent text-gray-700 text-sm focus:outline-none px-2 w-full"
                 />
-                <button className="bg-white text-blue-600 text-sm font-bold py-2 px-4 rounded-md hover:bg-gray-200 transition-colors">
+                <button className="bg-white text-blue-600 text-sm font-bold py-2 px-4 rounded-md hover:bg-gray-200 transition-colors"
+                onClick={handleSuscribeEmail}
+                >
                   Subscribe
                 </button>
               </div>

@@ -33,45 +33,6 @@ const adminSchema = new mongoose.Schema({
     }
 })
 const Admin = mongoose.model('Admin', adminSchema);
-// Project Schema
-// const projectSchema = new mongoose.Schema({
-//     image: {
-//         type: String,
-//         required: true,
-//     },
-//     name: {
-//         type: String,
-//         required: true,
-//     },
-//     description: {
-//         type: String,
-//         required: true,
-//     },
-// });
-
-// const Project = mongoose.model('Project', projectSchema);
-
-// Client Schema
-// const clientSchema = new mongoose.Schema({
-//     image: {
-//         type: String,
-//         required: true,
-//     },
-//     name: {
-//         type: String,
-//         required: true,
-//     },
-//     description: {
-//         type: String,
-//         required: true,
-//     },
-//     designation: {
-//         type: String,
-//         required: true,
-//     },
-// });
-
-// const Client = mongoose.model('Client', clientSchema);
 
 // Contact Form Schema
 const contactFormSchema = new mongoose.Schema({

@@ -1,35 +1,38 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import TestimonialCard from './TestimonialCard';
 
 const HappyClients = () => {
- const testimonials = [
- 
-  {
-    imageUrl: 'https://placehold.co/100x100/e2e8f0/4a5568?text=SK',
-    description: 'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
-    name: 'Shayne Kopec',
-    designation: 'Art Director',
-  },
-  {
-    imageUrl: 'https://placehold.co/100x100/e2e8f0/4a5568?text=JL',
-    description: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus.',
-    name: 'John Lapone',
-    designation: 'Lead Developer',
-  },
-  {
-    imageUrl: 'https://placehold.co/100x100/e2e8f0/4a5568?text=MF',
-    description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.',
-    name: 'Marry Freeman',
-    designation: 'Marketing Manager',
-  },
-  {
-    imageUrl: 'https://placehold.co/100x100/e2e8f0/4a5568?text=L',
-    description: 'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.',
-    name: 'Lucy',
-    designation: 'Sales Associate',
-  },
-];
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/user/clients'); // Assuming your backend runs on port 3000
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setClients(data.clients);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-12">Loading clients...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-12 text-red-500">Error: {error}</div>;
+  }
 
   return (
        <div className="bg-gray-50 min-h-screen w-full font-sans py-16 px-4 sm:px-6 lg:px-8">
@@ -46,13 +49,13 @@ const HappyClients = () => {
 
         {/* Testimonials Grid */}
        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {testimonials.map((testimonial, index) => (
+          {clients.map((client) => (
             <TestimonialCard
-              key={index}
-              imageUrl={testimonial.imageUrl}
-              description={testimonial.description}
-              name={testimonial.name}
-              designation={testimonial.designation}
+              key={client._id}
+              imageUrl={client.image+'?project=686c4502002a3f8df424&mode=admin'} // Assuming image URL is provided by backend
+              description={client.description}
+              name={client.name}
+              designation={client.designation}
             />
           ))}
         </div>
