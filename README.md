@@ -13,7 +13,7 @@
 |-----------|-----|-------------|
 | 🔧 Backend API | [https://it-consultancy.onrender.com](https://it-consultancy.onrender.com) | - |
 | 🎯 Landing Page | [https://it-consultancy-ivory.vercel.app/](https://it-consultancy-ivory.vercel.app/) | - |
-| 🎛️ Admin Panel | [https://it-consultancy-ykop-admin-panel.vercel.app/login](https://it-consultancy-ykop-admin-panel.vercel.app) | Email: `admin1@gmila.com`<br>Password: `Admin@123` |
+| 🎛️ Admin Panel | [https://it-consultancy-ykop-admin-panel.vercel.app](https://it-consultancy-ykop-admin-panel.vercel.app) | Email: `admin1@gmila.com`<br>Password: `Admin@123` |
 
 ## 📋 Table of Contents
 
