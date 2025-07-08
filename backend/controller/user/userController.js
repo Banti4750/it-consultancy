@@ -6,7 +6,7 @@ const Client = require('../../models/Client');
 
 const getImageUrl = (imageId) => {
   if (!imageId) return null;
-  return `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${imageId}/view`;
+  return `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${imageId}/preview`;
 };
 exports.submitContactForm = async (req, res) => {
     try {
