@@ -3,6 +3,7 @@ const router = express.Router();
 const adminAuth = require('../auth/adminAuth');
 const projectController = require('../controller/admin/projectController');
 const clientController = require('../controller/admin/clientController');
+const { upload } = require('../controller/admin/clientController');
 const userContactController = require('../controller/admin/usercontactController');
 const userSubscribedEmailController = require('../controller/admin/userSubscribedEmailController');
 const adminAuthController = require('../controller/admin/adminAuthController');
@@ -24,15 +25,15 @@ router.get('/protected', adminAuth,async (req, res) => {
 
 
 // Project Management Routes
-router.post('/projects', adminAuth, projectController.upload.single('image'), projectController.addProject);
+router.post('/projects', adminAuth, upload.single('image'), projectController.addProject);
 router.get('/projects', adminAuth, projectController.getProjects);
-router.put('/projects/:id', adminAuth, projectController.upload.single('image'), projectController.updateProject);
+router.put('/projects/:id', adminAuth, upload.single('image'), projectController.updateProject);
 router.delete('/projects/:id', adminAuth, projectController.deleteProject);
 
 // Client Management Routes
-router.post('/clients', adminAuth, clientController.upload.single('image'), clientController.addClient);
+router.post('/clients', adminAuth, upload.single('image'), clientController.addClient);
 router.get('/clients', adminAuth, clientController.getClients);
-router.put('/clients/:id', adminAuth, clientController.upload.single('image'), clientController.updateClient);
+router.put('/clients/:id', adminAuth, upload.single('image'), clientController.updateClient);
 router.delete('/clients/:id', adminAuth, clientController.deleteClient);
 
 // Contact Form Routes

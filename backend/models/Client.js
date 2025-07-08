@@ -9,14 +9,17 @@ const clientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  img: {
-    data: Buffer,
-    contentType: String,
+  imageId: {
+    type: String,
   },
   designation: {
         type: String,
         required: true,
     },
+},
+{
+  toJSON: { virtuals: true, getters: true },
+  toObject: { virtuals: true, getters: true }
 });
 
 module.exports = mongoose.model('Client', clientSchema);

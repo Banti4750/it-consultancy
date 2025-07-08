@@ -4,11 +4,12 @@ import axios from 'axios';
 const ProjectManagement = () => {
   const [projects, setProjects] = useState([]);
   const [newProject, setNewProject] = useState({ 
-    image: '', 
+    image: null, 
     name: '', 
     description: '' 
   });
   const [editingId, setEditingId] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchProjects();
@@ -30,41 +31,46 @@ const ProjectManagement = () => {
 
   const handleAddProject = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('adminToken');
-    const formData = new FormData();
-    formData.append('name', newProject.name);
-    formData.append('description', newProject.description);
-    if (newProject.image) {
-      formData.append('image', newProject.image);
-    }
-
+    setUploading(true);
+    
     try {
-      if (editingId) {
-        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/admin/projects/${editingId}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-      } else {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/admin/projects`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+      const token = localStorage.getItem('adminToken');
+      const formData = new FormData();
+      
+      formData.append('name', newProject.name);
+      formData.append('description', newProject.description);
+      
+      if (newProject.image) {
+        formData.append('image', newProject.image);
       }
-      setNewProject({ image: '', name: '', description: '' });
+
+      const url = editingId 
+        ? `${import.meta.env.VITE_BACKEND_URL}/api/admin/projects/${editingId}`
+        : `${import.meta.env.VITE_BACKEND_URL}/api/admin/projects`;
+      
+      const method = editingId ? 'put' : 'post';
+      
+      await axios[method](url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      setNewProject({ image: null, name: '', description: '' });
       setEditingId(null);
-      fetchProjects(); // Refresh the list
+      fetchProjects();
     } catch (error) {
       console.error('Error adding/updating project:', error);
+      alert('Error uploading project. Please try again.');
+    } finally {
+      setUploading(false);
     }
   };
 
   const handleEditProject = (project) => {
     setNewProject({
-      image: null, // Image will be handled separately
+      image: null, // Don't set the existing image file
       name: project.name,
       description: project.description
     });
@@ -72,6 +78,10 @@ const ProjectManagement = () => {
   };
 
   const handleDeleteProject = async (id) => {
+    if (!confirm('Are you sure you want to delete this project?')) {
+      return;
+    }
+
     try {
       const token = localStorage.getItem('adminToken');
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/admin/projects/${id}`, {
@@ -79,9 +89,10 @@ const ProjectManagement = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      fetchProjects(); // Refresh the list
+      fetchProjects();
     } catch (error) {
       console.error('Error deleting project:', error);
+      alert('Error deleting project. Please try again.');
     }
   };
 
@@ -98,6 +109,7 @@ const ProjectManagement = () => {
             <label className="block text-gray-700 text-sm font-bold mb-2">Image:</label>
             <input
               type="file"
+              accept="image/*"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               onChange={(e) => setNewProject({ ...newProject, image: e.target.files[0] })}
             />
@@ -125,15 +137,16 @@ const ProjectManagement = () => {
         </div>
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          disabled={uploading}
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
         >
-          {editingId ? 'Update Project' : 'Add Project'}
+          {uploading ? 'Uploading...' : (editingId ? 'Update Project' : 'Add Project')}
         </button>
         {editingId && (
           <button
             type="button"
             onClick={() => {
-              setNewProject({ image: '', name: '', description: '' });
+              setNewProject({ image: null, name: '', description: '' });
               setEditingId(null);
             }}
             className="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-200"
@@ -153,7 +166,7 @@ const ProjectManagement = () => {
               <div key={project._id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition duration-200">
                 {project.image && (
                   <img 
-                    src={project.image} 
+                    src={project.image+'?project=686c4502002a3f8df424&mode=admin'} 
                     alt={project.name} 
                     className="w-full h-48 object-cover"
                   />
