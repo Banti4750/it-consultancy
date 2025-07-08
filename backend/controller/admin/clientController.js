@@ -30,7 +30,7 @@ exports.upload = upload;
 // Helper function to get image URL
 const getImageUrl = (imageId) => {
   if (!imageId) return null;
-  return `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${imageId}/view`;
+  return `${process.env.APPWRITE_ENDPOINT}/storage/buckets/${process.env.APPWRITE_BUCKET_ID}/files/${imageId}/preview`;
 };
 
 exports.addClient = async (req, res) => {
