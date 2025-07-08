@@ -2,6 +2,9 @@ const { Admin } = require('../../db');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Client = require('../../models/Client');
+const Project = require('../../models/Project');
+const { ContactForm , SubscribedEmail } = require('../../db');
 
 // Admin Registration
 exports.registerAdmin=  async (req, res) => {
@@ -44,5 +47,23 @@ exports.loginAdmin =  async (req, res) => {
         }
     }catch(err){
         res.status(500).json({ error: err.message });
+    }
+}
+
+exports.adminDashboard =async (req, res) => {
+    try {
+        const projectCount = await Project.countDocuments();
+        const clientCount = await Client.countDocuments();
+        const contactForm = await ContactForm.countDocuments();
+        const userCount = await SubscribedEmail.countDocuments();
+
+        res.status(200).json({
+            projectCount,
+            clientCount,
+            contactForm,
+            userCount
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 }

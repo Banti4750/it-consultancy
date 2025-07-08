@@ -44,4 +44,7 @@ router.delete('/contact-forms/:id', adminAuth, userContactController.deleteConta
 router.get('/subscribed-emails', adminAuth, userSubscribedEmailController.getSubscribedEmails);
 router.delete('/subscribed-emails/:id', adminAuth, userSubscribedEmailController.deleteSubscribedEmail);
 
+//dashboard
+router.get('/dashboard', adminAuth, adminAuthController.adminDashboard)
+
 module.exports = router;
